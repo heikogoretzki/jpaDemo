@@ -22,6 +22,7 @@ public class Attendance {
     @Column(name = "date")
     private LocalDateTime date;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

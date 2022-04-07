@@ -62,16 +62,20 @@ class JpaDemoApplicationTests {
 
         Attendance attendance = new Attendance();
         attendance.setDate(LocalDateTime.now());
-        attendance.setUserId(user.getId());
+        attendance.setUser(user);
 
         entityManager.persist(attendance);
 
         assertNotNull(user.getId());
         assertNotNull(attendance.getId());
 
-        User userOfAttendance = entityManager.find(User.class, attendance.getUserId());
+        Attendance attendanceFromDb = entityManager.find(Attendance.class, attendance.getId());
+        assertNotNull(attendanceFromDb);
+        assertNotNull(attendanceFromDb.getUser());
+        assertEquals("max.muster", attendanceFromDb.getUser().getUsername());
 
-        assertNotNull(userOfAttendance);
-        assertEquals("max.muster", userOfAttendance.getUsername());
+        entityManager.clear();
+        User maxFromDb = entityManager.find(User.class, user.getId());
+        assertEquals(1, maxFromDb.getAttendances().size());
     }
 }
