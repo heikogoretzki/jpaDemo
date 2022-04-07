@@ -99,7 +99,5 @@ class JpaDemoApplicationTests {
         assertTrue(userFromDb.isPresent());
         assertEquals("kevin", userFromDb.get().getUsername());
 
-        Optional<User> max = userRepository.findByUsername("max");
-        assertFalse(max.isPresent());
     }
 }
