@@ -2,6 +2,7 @@ package com.mischokacademy.jpademo;
 
 import com.mischokacademy.jpademo.domain.Attendance;
 import com.mischokacademy.jpademo.domain.User;
+import com.mischokacademy.jpademo.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,11 +11,16 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class JpaDemoApplicationTests {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private EntityManager entityManager;
@@ -77,5 +83,23 @@ class JpaDemoApplicationTests {
         entityManager.clear();
         User maxFromDb = entityManager.find(User.class, user.getId());
         assertEquals(1, maxFromDb.getAttendances().size());
+    }
+
+    @Test
+    public void testUserRepo() {
+        User user = new User();
+        user.setUsername("kevin");
+        user.setPasswordEncoded("12345");
+
+        user = userRepository.save(user);
+        assertNotNull(user.getId());
+        assertTrue(user.getId() > 0);
+
+        Optional<User> userFromDb = userRepository.findById(user.getId());
+        assertTrue(userFromDb.isPresent());
+        assertEquals("kevin", userFromDb.get().getUsername());
+
+        Optional<User> max = userRepository.findByUsername("max");
+        assertFalse(max.isPresent());
     }
 }
