@@ -4,21 +4,24 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "attendance")
+public class Attendance {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "date")
+    private LocalDateTime date;
 
-    @Column(name = "password_Encoded")
-    private String passwordEncoded;
+    @Column(name = "user_id")
+    private Long userId;
 }
